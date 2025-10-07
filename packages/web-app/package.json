@@ -1,0 +1,47 @@
+{
+  "name": "@tax-app/web-app",
+  "version": "1.0.0",
+  "description": "React web application for tax preparation",
+  "private": true,
+  "scripts": {
+    "build": "react-scripts build",
+    "dev": "react-scripts start",
+    "start": "serve -s build",
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "test": "react-scripts test"
+  },
+  "dependencies": {
+    "@tax-app/shared": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.2",
+    "@reduxjs/toolkit": "^1.9.5",
+    "react-redux": "^8.1.2",
+    "@mui/material": "^5.14.1",
+    "@mui/icons-material": "^5.14.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "axios": "^1.4.0",
+    "formik": "^2.4.3",
+    "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "react-scripts": "5.0.1",
+    "serve": "^14.2.0",
+    "typescript": "^5.1.6"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

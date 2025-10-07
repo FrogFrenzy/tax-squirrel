@@ -1,0 +1,23 @@
+{
+  "name": "@tax-app/shared",
+  "version": "1.0.0",
+  "description": "Shared types, interfaces, and utilities",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src/**/*.ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "joi": "^17.9.2",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.195",
+    "@types/node": "^20.4.5",
+    "jest": "^29.6.1",
+    "typescript": "^5.1.6"
+  }
+}

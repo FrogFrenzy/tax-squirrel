@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "name": "tax-preparation-app",
+  "builds": [
+    {
+      "src": "packages/web-app/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_AUTH_SERVICE_URL": "https://your-auth-service.railway.app",
+    "REACT_APP_TAX_ENGINE_URL": "https://your-tax-engine.railway.app",
+    "REACT_APP_DOCUMENT_SERVICE_URL": "https://your-document-service.railway.app",
+    "REACT_APP_FILING_SERVICE_URL": "https://your-filing-service.railway.app",
+    "REACT_APP_PAYMENT_SERVICE_URL": "https://your-payment-service.railway.app"
+  },
+  "build": {
+    "env": {
+      "CI": "false"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
+    "paths": {
+      "@tax-app/shared/*": ["packages/shared/src/*"],
+      "@tax-app/auth/*": ["packages/auth-service/src/*"],
+      "@tax-app/tax-engine/*": ["packages/tax-engine/src/*"],
+      "@tax-app/document/*": ["packages/document-service/src/*"],
+      "@tax-app/filing/*": ["packages/filing-service/src/*"],
+      "@tax-app/payment/*": ["packages/payment-service/src/*"],
+      "@tax-app/web/*": ["packages/web-app/src/*"],
+      "@tax-app/mobile/*": ["packages/mobile-app/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+}

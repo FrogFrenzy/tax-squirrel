@@ -1,0 +1,122 @@
+services:
+  # Web Application (Frontend)
+  - type: web
+    name: tax-app-web
+    env: node
+    buildCommand: cd packages/web-app && npm install && npm run build
+    startCommand: cd packages/web-app && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: REACT_APP_AUTH_SERVICE_URL
+        fromService:
+          type: web
+          name: tax-app-auth
+          property: host
+      - key: REACT_APP_TAX_ENGINE_URL
+        fromService:
+          type: web
+          name: tax-app-tax-engine
+          property: host
+
+  # Authentication Service
+  - type: web
+    name: tax-app-auth
+    env: node
+    buildCommand: npm run bootstrap && cd packages/auth-service && npm run build
+    startCommand: cd packages/auth-service && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: ENCRYPTION_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tax-app-postgres
+          property: connectionString
+
+  # Tax Engine Service
+  - type: web
+    name: tax-app-tax-engine
+    env: node
+    buildCommand: npm run bootstrap && cd packages/tax-engine && npm run build
+    startCommand: cd packages/tax-engine && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3002
+      - key: JWT_SECRET
+        sync: tax-app-auth.JWT_SECRET
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tax-app-postgres
+          property: connectionString
+
+  # Document Service
+  - type: web
+    name: tax-app-documents
+    env: node
+    buildCommand: npm run bootstrap && cd packages/document-service && npm run build
+    startCommand: cd packages/document-service && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3003
+      - key: JWT_SECRET
+        sync: tax-app-auth.JWT_SECRET
+      - key: MONGODB_URL
+        fromDatabase:
+          name: tax-app-mongodb
+          property: connectionString
+
+  # Filing Service
+  - type: web
+    name: tax-app-filing
+    env: node
+    buildCommand: npm run bootstrap && cd packages/filing-service && npm run build
+    startCommand: cd packages/filing-service && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3004
+      - key: JWT_SECRET
+        sync: tax-app-auth.JWT_SECRET
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tax-app-postgres
+          property: connectionString
+
+  # Payment Service
+  - type: web
+    name: tax-app-payments
+    env: node
+    buildCommand: npm run bootstrap && cd packages/payment-service && npm run build
+    startCommand: cd packages/payment-service && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3005
+      - key: JWT_SECRET
+        sync: tax-app-auth.JWT_SECRET
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tax-app-postgres
+          property: connectionString
+
+databases:
+  - name: tax-app-postgres
+    databaseName: tax_app
+    user: tax_user
+
+  - name: tax-app-mongodb
+    databaseName: tax_documents

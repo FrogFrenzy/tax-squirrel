@@ -1,0 +1,134 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: tax_app
+      POSTGRES_USER: tax_user
+      POSTGRES_PASSWORD: tax_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  mongodb:
+    image: mongo:6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: tax_user
+      MONGO_INITDB_ROOT_PASSWORD: tax_password
+      MONGO_INITDB_DATABASE: tax_documents
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: packages/auth-service/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://tax_user:tax_password@postgres:5432/tax_app
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=your-jwt-secret-key
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./packages/auth-service:/app
+      - /app/node_modules
+
+  tax-engine:
+    build:
+      context: .
+      dockerfile: packages/tax-engine/Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://tax_user:tax_password@postgres:5432/tax_app
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./packages/tax-engine:/app
+      - /app/node_modules
+
+  document-service:
+    build:
+      context: .
+      dockerfile: packages/document-service/Dockerfile
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URL=mongodb://tax_user:tax_password@mongodb:27017/tax_documents
+    depends_on:
+      - mongodb
+    volumes:
+      - ./packages/document-service:/app
+      - /app/node_modules
+
+  filing-service:
+    build:
+      context: .
+      dockerfile: packages/filing-service/Dockerfile
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://tax_user:tax_password@postgres:5432/tax_app
+    depends_on:
+      - postgres
+    volumes:
+      - ./packages/filing-service:/app
+      - /app/node_modules
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: packages/payment-service/Dockerfile
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://tax_user:tax_password@postgres:5432/tax_app
+      - STRIPE_SECRET_KEY=your-stripe-secret-key
+    depends_on:
+      - postgres
+    volumes:
+      - ./packages/payment-service:/app
+      - /app/node_modules
+
+  web-app:
+    build:
+      context: .
+      dockerfile: packages/web-app/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_AUTH_SERVICE_URL=http://localhost:3001
+      - REACT_APP_TAX_ENGINE_URL=http://localhost:3002
+      - REACT_APP_DOCUMENT_SERVICE_URL=http://localhost:3003
+      - REACT_APP_FILING_SERVICE_URL=http://localhost:3004
+      - REACT_APP_PAYMENT_SERVICE_URL=http://localhost:3005
+    volumes:
+      - ./packages/web-app:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:
+  redis_data:
+  mongodb_data:
