@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐿️ Tax Squirrel - Demo UI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .navbar {
+            background: #2E7D32;
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #2E7D32;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #2E7D32;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            margin: 0 0.5rem;
+        }
+        
+        .btn:hover {
+            background: #1B5E20;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #2E7D32;
+            color: #2E7D32;
+        }
+        
+        .btn-outline:hover {
+            background: #2E7D32;
+            color: white;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .dashboard {
+            display: none;
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard.active {
+            display: block;
+        }
+        
+        .status-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #28a745;
+            width: 65%;
+            transition: width 0.3s ease;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .action-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .login-form {
+            display: none;
+            max-width: 400px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .login-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">🐿️ Tax Squirrel</div>
+            <div class="nav-links">
+                <a href="#" onclick="showPage('home')" class="active" id="nav-home">Home</a>
+                <a href="#" onclick="showPage('login')" id="nav-login">Login</a>
+                <a href="#" onclick="showPage('dashboard')" id="nav-dashboard" class="hidden">Dashboard</a>
+                <a href="#" onclick="showPage('tax-return')" id="nav-tax" class="hidden">Tax Return</a>
+                <a href="#" onclick="showPage('documents')" id="nav-docs" class="hidden">Documents</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Home Page -->
+            <div id="home-page" class="page active">
+                <div class="hero">
+                    <h1>🐿️ Tax Squirrel</h1>
+                    <p>Professional Tax Preparation Made Simple</p>
+                    <p style="color: #666; font-size: 1rem; max-width: 600px; margin: 0 auto 2rem;">
+                        Secure, fast, and intelligent tax preparation with AI-powered optimization, 
+                        document processing, and direct IRS e-filing. Get your maximum refund with confidence.
+                    </p>
+                    <button class="btn" onclick="showPage('login')">Get Started</button>
+                    <button class="btn btn-outline" onclick="showPage('dashboard')">View Demo</button>
+                </div>
+
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h3>Secure & Compliant</h3>
+                        <p>Bank-level security with SOC 2 compliance and multi-factor authentication.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Fast Processing</h3>
+                        <p>AI-powered tax calculations and real-time optimization suggestions.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📄</div>
+                        <h3>Smart Document Upload</h3>
+                        <p>OCR technology automatically extracts data from your tax documents.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🧮</div>
+                        <h3>Tax Optimization</h3>
+                        <p>Advanced algorithms find every deduction and credit you qualify for.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>IRS E-Filing</h3>
+                        <p>Direct integration with IRS systems for fast, secure filing.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💳</div>
+                        <h3>Secure Payments</h3>
+                        <p>Integrated payment processing for taxes owed and service fees.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Page -->
+            <div id="login-page" class="page">
+                <div class="login-form">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">Sign In to Tax Squirrel</h2>
+                    <div class="alert alert-info">
+                        <strong>Demo Mode:</strong> Enter any email and password to access the demo dashboard.
+                    </div>
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required placeholder="demo@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required placeholder="password">
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%; margin-bottom: 1rem;">Sign In</button>
+                        <button type="button" class="btn btn-outline" style="width: 100%;" onclick="handleGoogleLogin()">
+                            Continue with Google
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page dashboard">
+                <h2>Tax Dashboard</h2>
+                <p style="color: #666; margin-bottom: 2rem;">Welcome back! Here's your tax preparation progress and recommendations.</p>
+
+                <div class="status-card">
+                    <h3>2024 Tax Return</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+                        <span>Progress</span>
+                        <span>65%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem;">
+                        <div>
+                            <strong style="color: #28a745;">Estimated Refund: $2,450</strong>
+                        </div>
+                        <div>
+                            <span style="color: #666;">Last Updated: 2 hours ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Quick Actions</h3>
+                <div class="quick-actions">
+                    <div class="action-card" onclick="showPage('tax-return')">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">🧾</div>
+                        <h4>Continue Tax Return</h4>
+                        <p>Complete your 2024 tax return</p>
+                    </div>
+                    <div class="action-card" onclick="showPage('documents')">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">📄</div>
+                        <h4>Upload Documents</h4>
+                        <p>Add W-2s, 1099s, and receipts</p>
+                    </div>
+                    <div class="action-card" onclick="alert('Filing feature - would submit to IRS')">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">📤</div>
+                        <h4>Review & File</h4>
+                        <p>Submit your return to the IRS</p>
+                    </div>
+                    <div class="action-card" onclick="alert('Payment feature - would process payments')">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">💳</div>
+                        <h4>Make Payment</h4>
+                        <p>Pay taxes owed or service fees</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #dee2e6;">
+                        <h4>Recent Documents</h4>
+                        <div style="margin-top: 1rem;">
+                            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                                <span>W-2 Form - Employer ABC</span>
+                                <span style="color: #28a745;">✓ Processed</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                                <span>1099-INT - Bank Statement</span>
+                                <span style="color: #28a745;">✓ Processed</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                                <span>Charitable Donations</span>
+                                <span style="color: #ffc107;">⏳ Processing</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #dee2e6;">
+                        <h4>Tax Optimization Suggestions</h4>
+                        <div style="margin-top: 1rem;">
+                            <div class="alert alert-info" style="margin-bottom: 0.5rem; padding: 0.75rem;">
+                                Itemize deductions instead of standard
+                                <strong style="color: #28a745; float: right;">Save $340</strong>
+                            </div>
+                            <div class="alert alert-info" style="margin-bottom: 0.5rem; padding: 0.75rem;">
+                                Contribute to IRA for tax year
+                                <strong style="color: #28a745; float: right;">Save $1,200</strong>
+                            </div>
+                            <div class="alert alert-info" style="padding: 0.75rem;">
+                                Claim home office deduction
+                                <strong style="color: #28a745; float: right;">Save $890</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tax Return Page -->
+            <div id="tax-return-page" class="page">
+                <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <h2>2024 Tax Return</h2>
+                    <p style="color: #666; margin-bottom: 2rem;">Complete your tax return step by step. All information is automatically saved.</p>
+
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 4px;">
+                        <div style="text-align: center; flex: 1;">
+                            <div style="width: 30px; height: 30px; background: #28a745; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem;">1</div>
+                            <small>Personal Info</small>
+                        </div>
+                        <div style="text-align: center; flex: 1;">
+                            <div style="width: 30px; height: 30px; background: #28a745; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem;">2</div>
+                            <small>Income Sources</small>
+                        </div>
+                        <div style="text-align: center; flex: 1;">
+                            <div style="width: 30px; height: 30px; background: #2E7D32; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem;">3</div>
+                            <small>Deductions</small>
+                        </div>
+                        <div style="text-align: center; flex: 1;">
+                            <div style="width: 30px; height: 30px; background: #dee2e6; color: #666; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem;">4</div>
+                            <small>Review</small>
+                        </div>
+                    </div>
+
+                    <div style="min-height: 300px; padding: 2rem; border: 1px solid #dee2e6; border-radius: 4px; margin-bottom: 2rem;">
+                        <h3>Deductions & Credits</h3>
+                        <div class="alert alert-info">
+                            You can choose between standard deduction ($13,850) or itemize your deductions.
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                            <div class="form-group">
+                                <label>Mortgage Interest</label>
+                                <input type="number" placeholder="$0" value="12500">
+                            </div>
+                            <div class="form-group">
+                                <label>Charitable Donations</label>
+                                <input type="number" placeholder="$0" value="2500">
+                            </div>
+                            <div class="form-group">
+                                <label>State & Local Taxes</label>
+                                <input type="number" placeholder="$0" value="8500">
+                            </div>
+                            <div class="form-group">
+                                <label>Medical Expenses</label>
+                                <input type="number" placeholder="$0" value="1200">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between;">
+                        <button class="btn btn-outline">← Back</button>
+                        <div>
+                            <button class="btn btn-outline" style="margin-right: 1rem;">💾 Save Progress</button>
+                            <button class="btn">Next →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documents Page -->
+            <div id="documents-page" class="page">
+                <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <h2>Tax Documents</h2>
+                    <p style="color: #666; margin-bottom: 2rem;">Upload your tax documents and let our AI extract the information automatically.</p>
+
+                    <div style="border: 2px dashed #2E7D32; border-radius: 8px; padding: 3rem; text-align: center; margin-bottom: 2rem; cursor: pointer;" onclick="alert('File upload would open here')">
+                        <div style="font-size: 3rem; color: #2E7D32; margin-bottom: 1rem;">☁️</div>
+                        <h3>Drop files here or click to upload</h3>
+                        <p style="color: #666;">Supports PDF, JPG, PNG files up to 10MB each</p>
+                    </div>
+
+                    <div class="alert alert-info">
+                        Our AI will automatically extract data from your documents. 
+                        You can review and edit the extracted information before adding it to your tax return.
+                    </div>
+
+                    <h3>Uploaded Documents (3)</h3>
+                    <div style="margin-top: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border: 1px solid #dee2e6; border-radius: 4px; margin-bottom: 0.5rem;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <span style="color: #28a745;">✓</span>
+                                    <div>
+                                        <strong>W-2 Form - ABC Company</strong>
+                                        <div style="font-size: 0.9rem; color: #666;">Type: W-2 • Size: 245 KB • Uploaded: 2024-01-15</div>
+                                        <div style="font-size: 0.8rem; color: #28a745;">✓ Data extracted successfully</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline" style="margin-right: 0.5rem; padding: 0.5rem 1rem;">👁️ View</button>
+                                <button class="btn" style="background: #dc3545; padding: 0.5rem 1rem;">🗑️</button>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border: 1px solid #dee2e6; border-radius: 4px; margin-bottom: 0.5rem;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <span style="color: #28a745;">✓</span>
+                                    <div>
+                                        <strong>1099-INT - First National Bank</strong>
+                                        <div style="font-size: 0.9rem; color: #666;">Type: 1099-INT • Size: 156 KB • Uploaded: 2024-01-20</div>
+                                        <div style="font-size: 0.8rem; color: #28a745;">✓ Data extracted successfully</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline" style="margin-right: 0.5rem; padding: 0.5rem 1rem;">👁️ View</button>
+                                <button class="btn" style="background: #dc3545; padding: 0.5rem 1rem;">🗑️</button>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border: 1px solid #dee2e6; border-radius: 4px;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <span style="color: #ffc107;">⏳</span>
+                                    <div>
+                                        <strong>Charitable Donation Receipt</strong>
+                                        <div style="font-size: 0.9rem; color: #666;">Type: Receipt • Size: 89 KB • Uploaded: 2024-01-22</div>
+                                        <div style="font-size: 0.8rem; color: #ffc107;">⏳ Processing document...</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline" style="margin-right: 0.5rem; padding: 0.5rem 1rem;">👁️ View</button>
+                                <button class="btn" style="background: #dc3545; padding: 0.5rem 1rem;">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let isLoggedIn = false;
+
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+                page.style.display = 'none';
+            });
+
+            // Show selected page
+            const targetPage = document.getElementById(pageId + '-page');
+            if (targetPage) {
+                targetPage.classList.add('active');
+                targetPage.style.display = 'block';
+            }
+
+            // Update navigation
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            const activeNav = document.getElementById('nav-' + pageId);
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (email && password) {
+                isLoggedIn = true;
+                showLoggedInState();
+                showPage('dashboard');
+                
+                // Show success message
+                alert('Login successful! Welcome to Tax Squirrel Demo.');
+            }
+        }
+
+        function handleGoogleLogin() {
+            isLoggedIn = true;
+            showLoggedInState();
+            showPage('dashboard');
+            alert('Google login successful! Welcome to Tax Squirrel Demo.');
+        }
+
+        function showLoggedInState() {
+            // Show authenticated navigation items
+            document.getElementById('nav-dashboard').classList.remove('hidden');
+            document.getElementById('nav-tax').classList.remove('hidden');
+            document.getElementById('nav-docs').classList.remove('hidden');
+            
+            // Hide login link
+            document.getElementById('nav-login').style.display = 'none';
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            showPage('home');
+        });
+    </script>
+</body>
+</html>
