@@ -1,6 +1,21 @@
-# Tax Preparation Application
+# 🐿️ Tax Squirrel - Professional Tax Preparation Application
 
 A comprehensive, secure, and integrated online tax preparation platform that helps users optimize deductions, file returns, handle audits, and manage all aspects of the annual tax return process.
+
+## 🌐 **Live Demo**
+
+**Try the interactive demo:** https://frogfrenzy.github.io/tax-squirrel/
+
+Experience the complete Tax Squirrel interface including:
+- 🏠 Professional landing page with feature highlights
+- 🔐 Secure login system (demo mode - enter any credentials)
+- 📊 Interactive dashboard with tax return progress tracking
+- 🧾 Step-by-step tax return wizard with real-time calculations
+- 📄 Document upload interface with AI processing simulation
+- 💳 Payment processing and billing interface
+- 📱 Fully responsive design for mobile and desktop
+
+*Note: This is a UI demonstration - no real data is processed, stored, or transmitted.*
 
 ## Features
 
